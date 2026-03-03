@@ -27,13 +27,21 @@ def pin_to_ipfs(data):
 def get_from_ipfs(cid, content_type="json"):
     assert isinstance(cid, str), "get_from_ipfs accepts a cid in the form of a string"
     
-    url = f"https://gateway.moralisipfs.com/ipfs/{cid}"
+    gateways = [
+        f"https://ipfs.io/ipfs/{cid}",
+        f"https://cloudflare-ipfs.com/ipfs/{cid}",
+        f"https://dweb.link/ipfs/{cid}",
+        f"https://gateway.pinata.cloud/ipfs/{cid}",
+    ]
     
-    response = requests.get(url)
-    response.raise_for_status()
+    for url in gateways:
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            assert isinstance(data, dict), "get_from_ipfs should return a dict"
+            return data
+        except Exception:
+            continue
     
-    data = response.json() 
-    
-    assert isinstance(data, dict), "get_from_ipfs should return a dict"
-    
-    return data
+    raise Exception(f"Failed to retrieve CID {cid} from all gateways")
