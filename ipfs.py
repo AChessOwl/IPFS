@@ -1,5 +1,6 @@
 import requests
 import json
+import base64
 
 PROJECT_ID = "BL4gYbdukv1ZDL6yZLlzVKREfkXaR_TZe8QRs_VrdWhj_PT7zEoS9KTDKJLpiEKnkQAefon3zxIwNZUBDg7qDoA"
 PROJECT_SECRET = "607fc8ff69aee6fb2f5a179411dcc37fe5bcd5f9d380cb46354e42e815e4925a"
